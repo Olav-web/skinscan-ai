@@ -19,6 +19,7 @@ import {
     splitLegacyCssPriority,
 } from './serialization';
 import { createStyleEffectScope } from './scope';
+import { resolveCssValueAssetUrls } from './valueNormalization';
 import { getStateRuleSelectors, getUniqueStates } from './states';
 import {
     createStyleTargetDescriptors,
@@ -546,6 +547,8 @@ class StyleCompilerImpl implements StyleCompiler {
         }
 
         const { value, priority } = splitLegacyCssPriority(cssProperty, cssValue);
+        // Dynamic references are matched below against the unresolved text they were stringified into.
+        const emittedValue = resolveCssValueAssetUrls(value, input.assetBaseUrl, input.copiedAssetBaseUrl);
         if (
             atomicContext &&
             shouldEmitAtomicDefault({
@@ -559,11 +562,11 @@ class StyleCompilerImpl implements StyleCompiler {
                 container: atomicContext.container,
             })
         ) {
-            atomicContext.declarations.set(cssProperty, { property: cssProperty, value, priority });
+            atomicContext.declarations.set(cssProperty, { property: cssProperty, value: emittedValue, priority });
             return;
         }
 
-        const accepted = getRule(ruleTarget).style.setProperty(cssProperty, value, priority);
+        const accepted = getRule(ruleTarget).style.setProperty(cssProperty, emittedValue, priority);
         if (accepted === false) {
             addSerializationDiagnostic(
                 input,

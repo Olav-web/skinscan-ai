@@ -1,4 +1,5 @@
 import { getCompiledBackgroundDeclarations, getCompiledBackgroundShorthand } from './background';
+import { getBackgroundImageAssetBaseUrl } from './valueNormalization';
 import { rewriteAnimationKeyframes } from './keyframes';
 import {
     createAuthoredStyleDeclaration,
@@ -1248,6 +1249,7 @@ function createBackgroundDeclarations(scope: DeclarationScope) {
                 ? {
                       type: 'background-image' as const,
                       assetBaseUrl: scope.input.assetBaseUrl,
+                      ...(scope.input.copiedAssetBaseUrl ? { copiedAssetBaseUrl: scope.input.copiedAssetBaseUrl } : {}),
                       fallbackValue: 'none',
                   }
                 : BACKGROUND_EMPTY_FALLBACKS[property];
@@ -1263,11 +1265,17 @@ function createBackgroundDeclarations(scope: DeclarationScope) {
         }
     }
 
+    const assetBaseUrl = getBackgroundImageAssetBaseUrl(
+        backgroundStyle.backgroundImage,
+        scope.input.assetBaseUrl,
+        scope.input.copiedAssetBaseUrl
+    );
+
     if (isStyleDynamicVariableReference(backgroundStyle.backgroundColor)) {
         return [
             {
                 property: 'background',
-                value: getCompiledBackgroundShorthand(backgroundStyle, scope.input.assetBaseUrl),
+                value: getCompiledBackgroundShorthand(backgroundStyle, assetBaseUrl),
             },
         ];
     }
@@ -1281,12 +1289,12 @@ function createBackgroundDeclarations(scope: DeclarationScope) {
         return [
             {
                 property: 'background',
-                value: getCompiledBackgroundShorthand(backgroundStyle, scope.input.assetBaseUrl),
+                value: getCompiledBackgroundShorthand(backgroundStyle, assetBaseUrl),
             },
         ];
     }
 
-    return getCompiledBackgroundDeclarations(backgroundStyle, scope.input.assetBaseUrl)
+    return getCompiledBackgroundDeclarations(backgroundStyle, assetBaseUrl)
         .filter(declaration => shouldEmitBackgroundDeclaration(declaration.requiredSlotProperties, backgroundValues))
         .map(({ property, value }) => ({ property, value }));
 }

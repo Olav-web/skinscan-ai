@@ -27,6 +27,7 @@ import {
     expectTargetChunkOrder,
     type TestSourceData,
 } from './styleCompiler.testUtils';
+import { resolveCssValueAssetUrls } from './valueNormalization';
 
 describe('styleCompiler', () => {
     it('uses persisted dense identities for element, layout, and section surfaces', () => {
@@ -5627,6 +5628,78 @@ describe('styleCompiler', () => {
         expect(run.result).toContain(
             "background-image: url('https://cdn.weweb-staging.io/designs/project/sections/hero.png');"
         );
+    });
+
+    it('resolves copied assets in CSS without changing custom relative URLs', () => {
+        const variables: StyleDynamicVariable[] = [];
+        const run = createStyleCompiler().compileStylesheet({
+            scope: {
+                elementUids: ['elementA', 'elementB', 'elementC'],
+                sectionUids: [],
+                libraryComponentIds: [],
+            },
+            reader: createReader({
+                elements: {
+                    elementA: {
+                        uid: 'elementA',
+                        styles: {
+                            base: {
+                                default: {
+                                    backgroundImage:
+                                        'linear-gradient(black, white), url(images/Image_Aug_16,_2026.png?_wwcv=82)',
+                                },
+                            },
+                        },
+                    },
+                    elementB: {
+                        uid: 'elementB',
+                        styles: {
+                            base: {
+                                default: {
+                                    backgroundImage: {
+                                        __wwtype: 'f',
+                                        code: 'variables.image',
+                                        staticValue: "url('images/dynamic.png?_wwcv=82')",
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    elementC: {
+                        uid: 'elementC',
+                        styles: {
+                            base: {
+                                default: {
+                                    customCss: {
+                                        maskImage: 'url("files/mask.svg?_wwcv=82")',
+                                        content: '"url(images/text.png)"',
+                                        backgroundImage:
+                                            'url(https://cdn.example.com/a.png), url(data:image/svg+xml,%3Csvg%3E), url(/images/rooted.png), url(#paint), url(custom-hero.png), url(images/deployed.png)',
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            }),
+            stylesheet: createDynamicVariableStringStyleSheetAdapter(variables),
+            assetBaseUrl: '/',
+        });
+
+        expect(run.result).toContain('linear-gradient(black, white), url(/images/Image_Aug_16,_2026.png?_wwcv=82)');
+        expect(run.result).toContain("var(--ww-style-background-image, url('/images/dynamic.png?_wwcv=82'))");
+        expect(variables.map(variable => variable.property)).toContain('backgroundImage');
+        expect(run.result).toContain('mask-image: url("/files/mask.svg?_wwcv=82");');
+        expect(run.result).toContain('content: "url(images/text.png)";');
+        expect(run.result).toContain(
+            'background-image: url(https://cdn.example.com/a.png), url(data:image/svg+xml,%3Csvg%3E), url(/images/rooted.png), url(#paint), url(custom-hero.png), url(images/deployed.png);'
+        );
+    });
+
+    it('rejects an unclosed url() followed by long whitespace without backtracking', () => {
+        const value = `url(${' '.repeat(200_000)}`;
+
+        expect(resolveCssValueAssetUrls(value, '/')).toBe(value);
     });
 
     it('resets formula-backed background pieces when runtime resolves an empty value', () => {

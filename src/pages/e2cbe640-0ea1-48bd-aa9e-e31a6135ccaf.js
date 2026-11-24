@@ -5,6 +5,7 @@ import './styleCompiler/ww-style-page-e2cbe640-0ea1-48bd-aa9e-e31a6135ccaf.css';
 import element_1b1e2173_9b78_42cc_a8ee_a6167caea340 from "@weweb-internal/ext-element-1b1e2173-9b78-42cc-a8ee-a6167caea340";
 import element_3a7d6379_12d3_4387_98ff_b332bb492a63 from "@weweb-internal/ext-element-3a7d6379-12d3-4387-98ff-b332bb492a63";
 import element_59dca300_db78_42e4_a7a6_0cbf22d3cc82 from "@weweb-internal/ext-element-59dca300-db78-42e4-a7a6-0cbf22d3cc82";
+import element_6145eb60_0af8_4e52_bcc6_dc0f6743654e from "@weweb-internal/ext-element-6145eb60-0af8-4e52-bcc6-dc0f6743654e";
 import element_97a63460_5c25_4d74_ac1f_86693c2e4a08 from "@weweb-internal/ext-element-97a63460-5c25-4d74-ac1f-86693c2e4a08";
 import element_a823467c_bdc7_4cec_a38c_71875c4c214a from "@weweb-internal/ext-element-a823467c-bdc7-4cec-a38c-71875c4c214a";
 import element_aa27b26f_0686_4c29_98c5_8217044045b7 from "@weweb-internal/ext-element-aa27b26f-0686-4c29-98c5-8217044045b7";
@@ -46,6 +47,12 @@ export default async function registerPageComponents(app) {
         "baseId": "59dca300-db78-42e4-a7a6-0cbf22d3cc82",
         "importPath": "@weweb-internal/ext-element-59dca300-db78-42e4-a7a6-0cbf22d3cc82",
         "name": "wwobject-59dca300-db78-42e4-a7a6-0cbf22d3cc82",
+        "type": "element"
+    },
+    {
+        "baseId": "6145eb60-0af8-4e52-bcc6-dc0f6743654e",
+        "importPath": "@weweb-internal/ext-element-6145eb60-0af8-4e52-bcc6-dc0f6743654e",
+        "name": "wwobject-6145eb60-0af8-4e52-bcc6-dc0f6743654e",
         "type": "element"
     },
     {
@@ -98,6 +105,7 @@ export default async function registerPageComponents(app) {
         app.component("wwobject-1b1e2173-9b78-42cc-a8ee-a6167caea340", element_1b1e2173_9b78_42cc_a8ee_a6167caea340);
 app.component("wwobject-3a7d6379-12d3-4387-98ff-b332bb492a63", element_3a7d6379_12d3_4387_98ff_b332bb492a63);
 app.component("wwobject-59dca300-db78-42e4-a7a6-0cbf22d3cc82", element_59dca300_db78_42e4_a7a6_0cbf22d3cc82);
+app.component("wwobject-6145eb60-0af8-4e52-bcc6-dc0f6743654e", element_6145eb60_0af8_4e52_bcc6_dc0f6743654e);
 app.component("wwobject-97a63460-5c25-4d74-ac1f-86693c2e4a08", element_97a63460_5c25_4d74_ac1f_86693c2e4a08);
 app.component("wwobject-a823467c-bdc7-4cec-a38c-71875c4c214a", element_a823467c_bdc7_4cec_a38c_71875c4c214a);
 app.component("wwobject-aa27b26f-0686-4c29-98c5-8217044045b7", element_aa27b26f_0686_4c29_98c5_8217044045b7);

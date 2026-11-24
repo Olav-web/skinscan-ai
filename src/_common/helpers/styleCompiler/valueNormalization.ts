@@ -35,7 +35,12 @@ export function normalizeStyleRuntimeValue(value: unknown, normalizer: StyleCssV
     }
     if (normalizer.type === 'background-image') {
         const backgroundImage = value || normalizer.fallbackValue;
-        return normalizeBackgroundImageValue(backgroundImage, normalizer.assetBaseUrl);
+        const assetBaseUrl = getBackgroundImageAssetBaseUrl(
+            backgroundImage,
+            normalizer.assetBaseUrl,
+            normalizer.copiedAssetBaseUrl
+        );
+        return normalizeBackgroundImageValue(backgroundImage, assetBaseUrl);
     }
 
     return value;
@@ -60,6 +65,47 @@ function isCssImageFunction(value: string) {
         /^(?:url|var|env|image|-webkit-image-set|(?:repeating-)?(?:linear|radial|conic)-gradient|image-set|cross-fade|element|paint)\(/i;
 
     return cssImageFunction.test(value);
+}
+
+/**
+ * A CSS string, or a `url()` with its quoted or unquoted argument. Strings come first so a `url(`
+ * written inside one, such as `content: "url(x)"`, stays text. Each argument form owns its trailing
+ * whitespace so an unclosed `url(` followed by spaces is rejected in linear time.
+ */
+const CSS_STRING_OR_URL_PATTERN =
+    /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|(?<![\w-])url\(\s*(?:"((?:\\.|[^"\\])*)"\s*|'((?:\\.|[^'\\])*)'\s*|((?:\\.|[^"'()\\\s])+)\s*)?\)/gi;
+
+/**
+ * Resolves URLs for assets copied by the publisher. prepareLocalUrl writes these
+ * into images/ or files/ and adds the _wwcv cache version.
+ *
+ * A page stylesheet is served from assets/, so these URLs need the asset base.
+ * Custom relative URLs may point to a user file at its chosen deployed path.
+ */
+export function resolveCssValueAssetUrls(cssValue: string, assetBaseUrl?: string, copiedAssetBaseUrl?: string) {
+    const baseUrl = copiedAssetBaseUrl ?? assetBaseUrl;
+    if (!baseUrl || !/url\(/i.test(cssValue)) return cssValue;
+
+    return cssValue.replace(
+        CSS_STRING_OR_URL_PATTERN,
+        (match, doubleQuotedUrl?: string, singleQuotedUrl?: string, unquotedUrl?: string) => {
+            const url = doubleQuotedUrl ?? singleQuotedUrl ?? unquotedUrl;
+            if (!url || !isCopiedAssetPath(url) || (!copiedAssetBaseUrl && url.startsWith('/'))) return match;
+
+            const quote = doubleQuotedUrl !== undefined ? '"' : singleQuotedUrl !== undefined ? "'" : '';
+            return `url(${quote}${resolveAssetUrl(url, baseUrl)}${quote})`;
+        }
+    );
+}
+
+/** Chooses a base for bare values. Authored CSS url() values are resolved separately. */
+export function getBackgroundImageAssetBaseUrl(value: unknown, assetBaseUrl?: string, copiedAssetBaseUrl?: string) {
+    if (!copiedAssetBaseUrl || typeof value !== 'string') return assetBaseUrl;
+    return isCopiedAssetPath(value.trim()) ? copiedAssetBaseUrl : assetBaseUrl;
+}
+
+function isCopiedAssetPath(value: string) {
+    return /^\/?(?:images|files)\//.test(value) && value.includes('?_wwcv=');
 }
 
 function resolveAssetUrl(value: string, assetBaseUrl?: string) {

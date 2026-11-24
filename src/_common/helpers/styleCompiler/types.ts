@@ -294,6 +294,7 @@ export type StyleCssValueNormalizer =
           /** Normalizes legacy raw image paths into a CSS `<image>` value. */
           type: 'background-image';
           assetBaseUrl?: string;
+          copiedAssetBaseUrl?: string;
           fallbackValue?: unknown;
       };
 
@@ -328,6 +329,8 @@ export type StyleCompilerInput<TResult = unknown> = {
      * preserve document-relative asset resolution.
      */
     assetBaseUrl?: string;
+    /** Optional base for local images/files carrying the publisher's cache version. */
+    copiedAssetBaseUrl?: string;
     /**
      * Optional so static one-shot compilation is the default behavior.
      */
