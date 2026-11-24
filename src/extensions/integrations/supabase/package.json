@@ -1,0 +1,11 @@
+{
+  "name": "@weweb-internal/ext-integration-supabase",
+  "dependencies": {
+    "@supabase/supabase-js": "2.99.3"
+  },
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": "./supabase.front.ts"
+  }
+}
