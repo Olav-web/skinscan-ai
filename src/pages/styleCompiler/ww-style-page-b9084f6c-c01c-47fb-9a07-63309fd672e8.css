@@ -1135,11 +1135,11 @@
         border: 1px solid #e4d5f3;
         border-radius: 14px;
       }
-      .ww-e-d8x {
+      .ww-e-d8w {
         display: flex;
         width: 100%;
       }
-      .ww-e-d8x.ww-layout, .ww-e-d8x [data-ww-ls~="d8x"] {
+      .ww-e-d8w.ww-layout, .ww-e-d8w [data-ww-ls~="d8w"] {
         display: flex;
         flex-flow: column;
         gap: 12px;

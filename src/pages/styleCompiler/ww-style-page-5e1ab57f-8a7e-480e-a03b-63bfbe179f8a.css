@@ -209,17 +209,6 @@
         max-height: unset;
         min-height: unset;
       }
-      .ww-a-XMNgqUZITcWnfqZ3 {
-        z-index: unset;
-        align-self: unset;
-        display: flex;
-        max-width: unset;
-        min-width: unset;
-        height: auto;
-        max-height: unset;
-        min-height: unset;
-        font-family: var(--ww-default-font-family);
-      }
     }
     @layer ordered {
       .ww-e-d1s {
@@ -967,22 +956,6 @@
       }
       .ww-e-d8M:where([data-ww-states~="focus"]), .ww-e-d8M:where(:focus-within) {
         border: var(--02a2e532-3b4d-44d2-a8aa-9a1102bdad29, 1px solid #7C5CE6);
-      }
-      .ww-e-d8t {
-        margin: 12px 0;
-        padding: 12px;
-        width: 100%;
-        font-size: 15px;
-        font-weight: 600;
-        color: #66489b;
-        white-space-collapse: preserve;
-        background-color: #eee1fb;
-        transition: background-color .2s;
-        border-radius: 13px;
-        --ww-element-transition: background-color .2s;
-      }
-      .ww-e-d8t:where(:hover) {
-        background-color: #e1cef9;
       }
     }
   }

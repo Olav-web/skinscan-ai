@@ -3,7 +3,6 @@ import './styleCompiler/ww-style-page-5e1ab57f-8a7e-480e-a03b-63bfbe179f8a.css';
 
 // eslint-disable-next-line no-undef
 import element_1b1e2173_9b78_42cc_a8ee_a6167caea340 from "@weweb-internal/ext-element-1b1e2173-9b78-42cc-a8ee-a6167caea340";
-import element_59dca300_db78_42e4_a7a6_0cbf22d3cc82 from "@weweb-internal/ext-element-59dca300-db78-42e4-a7a6-0cbf22d3cc82";
 import element_aa27b26f_0686_4c29_98c5_8217044045b7 from "@weweb-internal/ext-element-aa27b26f-0686-4c29-98c5-8217044045b7";
 import element_b783dc65_d528_4f74_8c14_e27c934c39b1 from "@weweb-internal/ext-element-b783dc65-d528-4f74-8c14-e27c934c39b1";
 import element_d7904e9d_fc9a_4d80_9e32_728e097879ad from "@weweb-internal/ext-element-d7904e9d-fc9a-4d80-9e32-728e097879ad";
@@ -31,12 +30,6 @@ export default async function registerPageComponents(app) {
         "baseId": "1b1e2173-9b78-42cc-a8ee-a6167caea340",
         "importPath": "@weweb-internal/ext-element-1b1e2173-9b78-42cc-a8ee-a6167caea340",
         "name": "wwobject-1b1e2173-9b78-42cc-a8ee-a6167caea340",
-        "type": "element"
-    },
-    {
-        "baseId": "59dca300-db78-42e4-a7a6-0cbf22d3cc82",
-        "importPath": "@weweb-internal/ext-element-59dca300-db78-42e4-a7a6-0cbf22d3cc82",
-        "name": "wwobject-59dca300-db78-42e4-a7a6-0cbf22d3cc82",
         "type": "element"
     },
     {
@@ -75,7 +68,6 @@ export default async function registerPageComponents(app) {
     } else {
         // eslint-disable-next-line no-undef
         app.component("wwobject-1b1e2173-9b78-42cc-a8ee-a6167caea340", element_1b1e2173_9b78_42cc_a8ee_a6167caea340);
-app.component("wwobject-59dca300-db78-42e4-a7a6-0cbf22d3cc82", element_59dca300_db78_42e4_a7a6_0cbf22d3cc82);
 app.component("wwobject-aa27b26f-0686-4c29-98c5-8217044045b7", element_aa27b26f_0686_4c29_98c5_8217044045b7);
 app.component("wwobject-b783dc65-d528-4f74-8c14-e27c934c39b1", element_b783dc65_d528_4f74_8c14_e27c934c39b1);
 app.component("wwobject-d7904e9d-fc9a-4d80-9e32-728e097879ad", element_d7904e9d_fc9a_4d80_9e32_728e097879ad);
